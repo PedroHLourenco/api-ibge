@@ -47,7 +47,7 @@ Sistema orientado a serviços (SOA) que consome a API de nomes do IBGE para forn
 1. Clone o repositório:
 
 ```bash
-git clone [URL_DO_REPOSITÓRIO]
+git clone https://github.com/PedroHLourenco/api-ibge.git
 cd api-ibge
 ```
 
