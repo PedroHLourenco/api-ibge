@@ -4,7 +4,7 @@
 
 - Gabriel Presense - RA: 22143207-2
 - Hudson Matias - RA: 22045746-2
-- Pedro Henrique de ABreu Lourenço - RA: 22014566-2
+- Pedro Henrique de Abreu Lourenço - RA: 22014566-2
 
 ## Descrição
 
