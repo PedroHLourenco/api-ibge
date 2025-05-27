@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Nomes do IBGE</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js para visualização de gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Análise de Tendências de Nomes no Brasil</h1>
+        <p>Sistema baseado em dados do IBGE desde 1930</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#evolucao-nome" class="active" data-section="evolucao-nome">Evolução do Ranking</a></li>
+            <li><a href="#ranking-localidade" data-section="ranking-localidade">Ranking por Localidade</a></li>
+            <li><a href="#comparacao-nomes" data-section="comparacao-nomes">Comparação de Nomes</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Seção 1: Evolução do ranking de um nome -->
+        <section id="evolucao-nome" class="section-content active">
+            <h2>Evolução do Ranking de um Nome</h2>
+            <p>Acompanhe como a popularidade de um nome evoluiu ao longo das décadas no Brasil.</p>
+            
+            <div class="form-container">
+                <form id="form-evolucao">
+                    <div class="form-group">
+                        <label for="nome-evolucao">Nome:</label>
+                        <input type="text" id="nome-evolucao" required placeholder="Ex: Maria">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="decada-inicio">Década Inicial:</label>
+                        <select id="decada-inicio" required>
+                            <option value="1930">1930</option>
+                            <option value="1940">1940</option>
+                            <option value="1950">1950</option>
+                            <option value="1960">1960</option>
+                            <option value="1970">1970</option>
+                            <option value="1980">1980</option>
+                            <option value="1990">1990</option>
+                            <option value="2000">2000</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="decada-fim">Década Final:</label>
+                        <select id="decada-fim" required>
+                            <option value="1940">1940</option>
+                            <option value="1950">1950</option>
+                            <option value="1960">1960</option>
+                            <option value="1970">1970</option>
+                            <option value="1980">1980</option>
+                            <option value="1990">1990</option>
+                            <option value="2000">2000</option>
+                            <option value="2010" selected>2010</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Analisar</button>
+                </form>
+            </div>
+            
+            <div class="result-container" id="result-evolucao">
+                <div class="loading" style="display: none;">Carregando...</div>
+                <div class="error" style="display: none;"></div>
+                <div class="chart-container">
+                    <canvas id="chart-evolucao"></canvas>
+                </div>
+                <div class="info-container">
+                    <h3>Informações</h3>
+                    <div id="info-evolucao"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 2: Ranking de nomes em uma localidade -->
+        <section id="ranking-localidade" class="section-content">
+            <h2>Ranking de Nomes por Localidade</h2>
+            <p>Descubra os três nomes mais frequentes em uma localidade ao longo das décadas.</p>
+            
+            <div class="form-container">
+                <form id="form-ranking">
+                    <div class="form-group">
+                        <label for="localidade-tipo">Tipo de Localidade:</label>
+                        <select id="localidade-tipo" required>
+                            <option value="UF">Estado (UF)</option>
+                            <option value="municipio">Município</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="uf-container">
+                        <label for="localidade-uf">Estado:</label>
+                        <select id="localidade-uf" required>
+                            <option value="12">AC</option>
+                            <option value="27">AL</option>
+                            <option value="16">AP</option>
+                            <option value="13">AM</option>
+                            <option value="29">BA</option>
+                            <option value="23">CE</option>
+                            <option value="53">DF</option>
+                            <option value="32">ES</option>
+                            <option value="52">GO</option>
+                            <option value="21">MA</option>
+                            <option value="51">MT</option>
+                            <option value="50">MS</option>
+                            <option value="31">MG</option>
+                            <option value="15">PA</option>
+                            <option value="25">PB</option>
+                            <option value="41">PR</option>
+                            <option value="26">PE</option>
+                            <option value="22">PI</option>
+                            <option value="33" selected>RJ</option>
+                            <option value="24">RN</option>
+                            <option value="43">RS</option>
+                            <option value="11">RO</option>
+                            <option value="14">RR</option>
+                            <option value="42">SC</option>
+                            <option value="35">SP</option>
+                            <option value="28">SE</option>
+                            <option value="17">TO</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="municipio-container" style="display: none;">
+                        <label for="localidade-municipio">Município:</label>
+                        <input type="text" id="localidade-municipio-nome" placeholder="Digite o nome do município">
+                        <input type="hidden" id="localidade-municipio-codigo">
+                        <div id="municipios-lista" class="dropdown-list"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Analisar</button>
+                </form>
+            </div>
+            
+            <div class="result-container" id="result-ranking">
+                <div class="loading" style="display: none;">Carregando...</div>
+                <div class="error" style="display: none;"></div>
+                <div class="table-container">
+                    <table id="table-ranking">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Ranking</th>
+                                <th>1930</th>
+                                <th>1940</th>
+                                <th>1950</th>
+                                <th>1960</th>
+                                <th>1970</th>
+                                <th>1980</th>
+                                <th>1990</th>
+                                <th>2000</th>
+                                <th>2010</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 3: Comparação de dois nomes ao longo do tempo -->
+        <section id="comparacao-nomes" class="section-content">
+            <h2>Comparação de Nomes ao Longo do Tempo</h2>
+            <p>Compare a popularidade de dois nomes diferentes ao longo das décadas no Brasil.</p>
+            
+            <div class="form-container">
+                <form id="form-comparacao">
+                    <div class="form-group">
+                        <label for="nome1">Primeiro Nome:</label>
+                        <input type="text" id="nome1" required placeholder="Ex: João">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nome2">Segundo Nome:</label>
+                        <input type="text" id="nome2" required placeholder="Ex: Maria">
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Comparar</button>
+                </form>
+            </div>
+            
+            <div class="result-container" id="result-comparacao">
+                <div class="loading" style="display: none;">Carregando...</div>
+                <div class="error" style="display: none;"></div>
+                <div class="chart-container">
+                    <canvas id="chart-comparacao"></canvas>
+                </div>
+                <div class="info-container">
+                    <h3>Informações</h3>
+                    <div id="info-comparacao"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Sistema desenvolvido com arquitetura SOA (Service-Oriented Architecture)</p>
+        <p>Dados fornecidos pela <a href="https://servicodados.ibge.gov.br/api/docs/nomes?versao=2" target="_blank">API de Nomes do IBGE</a></p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="./services/ibge-service.js"></script>
+    <script src="./services/analise-service.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
